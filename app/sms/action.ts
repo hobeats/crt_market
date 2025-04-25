@@ -28,7 +28,6 @@ export async function smsLogin(
   if (!prevState.token) {
     const result = phoneSchema.safeParse(phone);
     if (!result.success) {
-      console.log(result.error.flatten());
       return {
         token: false,
         phone, // 입력값 유지

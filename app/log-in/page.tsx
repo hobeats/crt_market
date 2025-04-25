@@ -25,13 +25,6 @@ export default function Login() {
           errors={state?.fieldErrors.email}
         />
         <Input
-          name="username"
-          type="text"
-          placeholder="Username"
-          required
-          errors={state?.fieldErrors.username}
-        />
-        <Input
           name="password"
           type="password"
           placeholder="Password"
@@ -41,11 +34,6 @@ export default function Login() {
         />
         <Button text="Log in" />
       </form>
-      {state?.success && (
-        <div className="primary-btn h-10 bg-green-500 py-2">
-          로그인 성공!
-        </div>
-      )}
       <SocialLogin />
     </div>
   );
