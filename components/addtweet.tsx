@@ -2,7 +2,6 @@
 
 import { uploadTweet } from "@/app/(tabs)/action";
 import Button from "./button";
-import Input from "./input";
 import { useFormState, useFormStatus } from "react-dom";
 
 export default function AddTweet() {

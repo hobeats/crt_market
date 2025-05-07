@@ -5,7 +5,7 @@ import {
   PASSWORD_MIN_LENGTH,
   PASSWORD_REGEX,
   PASSWORD_REGEX_ERROR,
-} from "../../../lib/constants";
+} from "@/lib/constants";
 import db from "@/lib/db";
 import bcrypt from "bcrypt";
 import { redirect } from "next/navigation";
@@ -15,9 +15,12 @@ const checkPasswords = ({
   password,
   confirm_password,
 }: {
-  password: string;
-  confirm_password: string;
-}) => password === confirm_password;
+  password?: string;
+  confirm_password?: string;
+}) => {
+  if (!password && !confirm_password) return true;
+  return password === confirm_password;
+};
 
 const formSchema = z
   .object({
@@ -29,9 +32,14 @@ const formSchema = z
       .trim()
       .toLowerCase(),
     email: z.string().email().toLowerCase(),
-    password: z.string().min(PASSWORD_MIN_LENGTH),
-    // .regex(PASSWORD_REGEX, PASSWORD_REGEX_ERROR),
-    confirm_password: z.string().min(PASSWORD_MIN_LENGTH),
+    password: z
+      .string()
+      .optional()
+      .refine((val) => !val || PASSWORD_REGEX.test(val), {
+        message: PASSWORD_REGEX_ERROR,
+      }),
+    confirm_password: z.string().optional(),
+    bio: z.string().optional(),
   })
   .superRefine(async ({ username }, ctx) => {
     const user = await db.user.findUnique({
@@ -42,7 +50,8 @@ const formSchema = z
         id: true,
       },
     });
-    if (user) {
+    const session = await getSession();
+    if (user && user.id !== session.id) {
       ctx.addIssue({
         code: "custom",
         message: "This username is already taken",
@@ -61,7 +70,8 @@ const formSchema = z
         id: true,
       },
     });
-    if (user) {
+    const session = await getSession();
+    if (user && user.id !== session.id) {
       ctx.addIssue({
         code: "custom",
         message: "This email is already taken",
@@ -76,31 +86,34 @@ const formSchema = z
     path: ["confirm_password"],
   });
 
-export async function createAccount(prevState: any, formData: FormData) {
+export async function editAccount(prevState: any, formData: FormData) {
   const data = {
     username: formData.get("username"),
     email: formData.get("email"),
-    password: formData.get("password"),
-    confirm_password: formData.get("confirm_password"),
+    password: formData.get("password") || undefined,
+    confirm_password: formData.get("confirm_password") || undefined,
+    bio: formData.get("bio"),
   };
+  const id = (await getSession()).id;
   const result = await formSchema.spa(data);
   if (!result.success) {
+    console.log(result.error.flatten());
     return result.error.flatten();
   } else {
-    const hashedPassword = await bcrypt.hash(result.data.password, 12);
-    const user = await db.user.create({
-      data: {
-        username: result.data.username,
-        email: result.data.email,
-        password: hashedPassword,
-      },
-      select: {
-        id: true,
-      },
+    const updateData: any = {
+      username: result.data.username,
+      email: result.data.email,
+    };
+
+    if (result.data.password) {
+      updateData.password = await bcrypt.hash(result.data.password, 12);
+    }
+
+    const user = await db.user.update({
+      where: { id },
+      data: updateData,
     });
-    const session = await getSession();
-    session.id = user.id;
-    await session.save();
+
     redirect("/user");
   }
 }

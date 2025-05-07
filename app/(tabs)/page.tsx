@@ -11,7 +11,7 @@ async function getInitialTweets() {
       create_at: true,
       id: true,
     },
-    take: 6,
+    take: 4,
     orderBy: {
       create_at: "desc",
     },

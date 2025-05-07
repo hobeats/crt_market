@@ -15,8 +15,8 @@ export async function getMoreTweets(page: number) {
       create_at: true,
       id: true,
     },
-    skip: (page - 1) * 5,
-    take: 6,
+    skip: (page - 1) * 4,
+    take: 5,
     orderBy: {
       create_at: "desc",
     },

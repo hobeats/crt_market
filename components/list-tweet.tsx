@@ -12,9 +12,16 @@ export default function ListTweet({ tweet, create_at, id }: ListTweetProps) {
     <Link href={`/tweets/${id}`} className="flex gap-5">
       <div className="flex flex-col gap-1 *:text-white">
         <span className="text-lg">
-          {tweet.length > 100 ? tweet.slice(0, 100) + "... 더보기" : tweet}
+          {tweet.length > 100 ? (
+            <div>
+              {tweet.slice(0, 100)}
+              <span className="text-neutral-500"> ... 더보기</span>
+            </div>
+          ) : (
+            tweet
+          )}
         </span>
-        <span className="text-sm text-neutral-500">
+        <span className="text-xs text-gray-500">
           {formatToTimeAgo(create_at.toString())}
         </span>
       </div>
