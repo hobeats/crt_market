@@ -66,14 +66,8 @@ export default async function Profile() {
               <div className="font-medium">{user?.email}</div>
             </div>
             <div className="p-4 bg-zinc-800 rounded-md">
-              <div className="text-sm font-medium text-gray-400 mb-1">
-                가입일
-              </div>
-              <div className="font-medium">
-                {user?.create_at
-                  ? new Date(user.create_at).toLocaleDateString("ko-KR")
-                  : ""}
-              </div>
+              <div className="text-sm font-medium text-gray-400 mb-1">Bio</div>
+              <div className="font-medium">{user.bio}</div>
             </div>
           </div>
         </div>

@@ -54,7 +54,7 @@ const formSchema = z
     if (user && user.id !== session.id) {
       ctx.addIssue({
         code: "custom",
-        message: "This username is already taken",
+        message: "이미 사용중인 이름입니다.",
         path: ["username"],
         fatal: true,
       });
@@ -74,7 +74,7 @@ const formSchema = z
     if (user && user.id !== session.id) {
       ctx.addIssue({
         code: "custom",
-        message: "This email is already taken",
+        message: "이미 사용 중인 이메일입니다.",
         path: ["email"],
         fatal: true,
       });
@@ -82,7 +82,7 @@ const formSchema = z
     }
   })
   .refine(checkPasswords, {
-    message: "Both passwords should be the same!",
+    message: "패스워드가 동일하지 않습니다!",
     path: ["confirm_password"],
   });
 
@@ -103,6 +103,7 @@ export async function editAccount(prevState: any, formData: FormData) {
     const updateData: any = {
       username: result.data.username,
       email: result.data.email,
+      bio: result.data.bio,
     };
 
     if (result.data.password) {

@@ -19,7 +19,7 @@ export default function EditUserForm({ user }: { user: any }) {
         <div className="p-6">
           <form
             action={action}
-            className="space-y-4 flex flex-col items-center justify-center"
+            className="space-y-4 flex flex-col items-center justify-center pb-40"
           >
             <div className="w-24 h-24 flex items-center justify-center rounded-full bg-orange-500 text-white text-3xl font-bold mb-4 relative overflow-hidden">
               {user?.avatar !== null ? (
