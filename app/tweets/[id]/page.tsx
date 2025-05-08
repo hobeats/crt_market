@@ -77,10 +77,10 @@ async function getLikeStatus(tweetId: number, userId: number) {
 export default async function tweetDetail({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const resolvedParams = await params;
-  const id = Number(resolvedParams.id);
+  const { id: rawId } = await params;
+  const id = Number(rawId);
   if (isNaN(id)) {
     return notFound();
   }
