@@ -31,6 +31,6 @@ export default async function SearchTweet(prevState: any, formData: FormData) {
       create_at: "desc",
     },
   });
-  console.log(findTweet);
+
   return { tweets: findTweet };
 }

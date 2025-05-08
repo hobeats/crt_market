@@ -97,7 +97,6 @@ export async function editAccount(prevState: any, formData: FormData) {
   const id = (await getSession()).id;
   const result = await formSchema.spa(data);
   if (!result.success) {
-    console.log(result.error.flatten());
     return result.error.flatten();
   } else {
     const updateData: any = {

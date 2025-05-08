@@ -79,7 +79,8 @@ export default async function tweetDetail({
 }: {
   params: { id: string };
 }) {
-  const id = Number(params.id);
+  const resolvedParams = await params;
+  const id = Number(resolvedParams.id);
   if (isNaN(id)) {
     return notFound();
   }
