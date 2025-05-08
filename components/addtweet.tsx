@@ -2,10 +2,10 @@
 
 import { uploadTweet } from "@/app/(tabs)/action";
 import Button from "./button";
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState } from "react";
 
 export default function AddTweet() {
-  const [state, action] = useFormState(uploadTweet, null);
+  const [state, action] = useActionState(uploadTweet, null);
   return (
     <div className="border-b  border-gray-300 p-4 flex gap-4">
       <form action={action} className="flex-1 space-y-3">

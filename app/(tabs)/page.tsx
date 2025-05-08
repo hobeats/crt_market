@@ -9,7 +9,14 @@ async function getInitialTweets() {
     select: {
       tweet: true,
       create_at: true,
+      views: true,
       id: true,
+      _count: {
+        select: {
+          Comment: true,
+          Like: true,
+        },
+      },
     },
     take: 4,
     orderBy: {
@@ -18,6 +25,10 @@ async function getInitialTweets() {
   });
   return tweets;
 }
+
+export const metadata = {
+  title: "Tweets",
+};
 
 export type InitialTweets = Prisma.PromiseReturnType<typeof getInitialTweets>;
 

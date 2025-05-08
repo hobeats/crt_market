@@ -13,7 +13,14 @@ export async function getMoreTweets(page: number) {
     select: {
       tweet: true,
       create_at: true,
+      views: true,
       id: true,
+      _count: {
+        select: {
+          Comment: true,
+          Like: true,
+        },
+      },
     },
     skip: (page - 1) * 4,
     take: 5,

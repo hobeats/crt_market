@@ -49,6 +49,9 @@ export default function TweetList({ initialTweets }: TweetListProps) {
         <ListTweet
           key={tweet.id}
           tweet={tweet.tweet ?? ""}
+          views={tweet.views}
+          like={tweet._count.Like}
+          comment={tweet._count.Comment}
           create_at={tweet.create_at}
           id={tweet.id}
         />
