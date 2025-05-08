@@ -1,7 +1,7 @@
 import db from "@/lib/db";
 import EditUserForm from "@/components/edit-user";
 
-export default async function EditUser({
+export default async function Page({
   params,
 }: {
   params: { username: string };
