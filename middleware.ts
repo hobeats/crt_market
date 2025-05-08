@@ -1,28 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
-import getSession from "./lib/session";
 
-interface Routes {
-  [key: string]: boolean;
-}
-
-const publicOnlyUrls: Routes = {
+const publicOnlyUrls: Record<string, boolean> = {
   "/log-in": true,
   "/sms": true,
   "/create-account": true,
 };
 
-export async function middleware(request: NextRequest) {
-  const session = await getSession();
-  const exists = publicOnlyUrls[request.nextUrl.pathname];
-  if (!session.id) {
-    if (!exists) {
-      return NextResponse.redirect(new URL("/log-in", request.url));
-    }
-  } else {
-    if (exists) {
-      return NextResponse.redirect(new URL("/", request.url));
-    }
+export function middleware(request: NextRequest) {
+  const sessionCookie = request.cookies.get("delicious-carrot");
+  const isLoggedIn = sessionCookie !== undefined;
+
+  const pathname = request.nextUrl.pathname;
+  const isPublic = publicOnlyUrls[pathname];
+
+  if (!isLoggedIn && !isPublic) {
+    return NextResponse.redirect(new URL("/log-in", request.url));
   }
+
+  if (isLoggedIn && isPublic) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {
