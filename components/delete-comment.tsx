@@ -5,11 +5,11 @@ import { deleteCommentAction } from "@/app/tweets/[id]/action";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/navigation";
 
-export default function DeleteCommentButton({
-  commentId,
-}: {
+interface PageProps {
   commentId: number;
-}) {
+}
+
+export default function DeleteCommentButton({ commentId }: PageProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 

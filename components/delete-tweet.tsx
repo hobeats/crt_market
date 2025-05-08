@@ -2,7 +2,11 @@
 
 import { deleteTweetAction } from "@/app/tweets/[id]/action";
 
-export default function DeleteButton({ tweetId }: { tweetId: number }) {
+interface PageProps {
+  tweetId: number;
+}
+
+export default function DeleteButton({ tweetId }: PageProps) {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     const ok = confirm("정말 삭제하시겠습니까?");
     if (!ok) {

@@ -11,6 +11,10 @@ import AddComment from "@/components/addcomment";
 import CommentList from "@/components/list-comment";
 import DeleteButton from "@/components/delete-tweet";
 
+interface PageProps {
+  params: { id: string };
+}
+
 async function getIsOwner(userId: number) {
   const session = await getSession();
   if (session.id) {
@@ -74,11 +78,7 @@ async function getLikeStatus(tweetId: number, userId: number) {
   };
 }
 
-export default async function tweetDetail({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function tweetDetail({ params }: PageProps) {
   const id = Number(params.id);
   if (isNaN(id)) {
     return notFound();

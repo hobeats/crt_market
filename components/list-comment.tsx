@@ -3,7 +3,11 @@ import { formatToTimeAgo } from "@/lib/utils";
 import DeleteCommentButton from "./delete-comment";
 import getSession from "@/lib/session";
 
-export default async function CommentList({ tweetId }: { tweetId: number }) {
+interface PageProps {
+  tweetId: number;
+}
+
+export default async function CommentList({ tweetId }: PageProps) {
   const comments = await db.comment.findMany({
     where: { tweetId },
     include: {
