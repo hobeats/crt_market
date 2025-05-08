@@ -6,7 +6,7 @@ import SocialLogin from "@/components/social-login";
 import { useFormState } from "react-dom";
 import { logIn } from "./actions";
 import { PASSWORD_MIN_LENGTH } from "@/lib/constants";
-
+import Link from "next/link";
 
 export default function Login() {
   const [state, dispatch] = useFormState(logIn, null);
@@ -33,6 +33,9 @@ export default function Login() {
           errors={state?.fieldErrors.password}
         />
         <Button text="Log in" />
+        <Link href="create-account" className="primary-btn h-10">
+          Create account
+        </Link>
       </form>
       <SocialLogin />
     </div>
