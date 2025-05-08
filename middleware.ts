@@ -12,17 +12,23 @@ const publicOnlyUrls: Routes = {
 };
 
 export async function middleware(request: NextRequest) {
-  const session = await getSession();
+  const cookie = request.cookies.get("session")?.value;
+  const sessionId = cookie ?? null;
+
   const exists = publicOnlyUrls[request.nextUrl.pathname];
-  if (!session.id) {
-    if (!exists) {
+  const isPublicOnly = exists === true;
+
+  if (!sessionId) {
+    if (!isPublicOnly) {
       return NextResponse.redirect(new URL("/log-in", request.url));
     }
   } else {
-    if (exists) {
+    if (isPublicOnly) {
       return NextResponse.redirect(new URL("/", request.url));
     }
   }
+
+  return NextResponse.next();
 }
 
 export const config = {
